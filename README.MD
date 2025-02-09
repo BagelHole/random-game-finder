@@ -41,9 +41,12 @@ Contributions are welcome!
 
 ## Attribution
 
-Logo ------------------------
+- Logo -
+
 COLLECTION: Cube Action Icons
+
 LICENSE: [CC Attribution License](https://www.svgrepo.com/page/licensing/#CC%20Attribution)
+
 AUTHOR: Jo Szczepanska
 
 ## License
