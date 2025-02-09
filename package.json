@@ -18,10 +18,12 @@
   "build": {
     "appId": "com.randomgamefinder.app",
     "mac": {
-        "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities"
     },
     "win": {
-        "target": "nsis"
+      "target": "nsis",
+      "icon": "game-logo.png"
     }
-}
+  },
+  "productName": "Random Game Finder"
 }

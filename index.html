@@ -16,7 +16,8 @@
       }
 
       .titlebar {
-        height: 32px;
+        height: 40px;
+        font-size: 20px;
         background: #2a2a2a;
         display: flex;
         align-items: center;
@@ -78,6 +79,22 @@
       #status {
         font-family: monospace;
         opacity: 0.8;
+        font-size: 18px;
+        background: none;
+        border: none;
+        color: inherit;
+        padding: 0;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+
+      #status:hover {
+        opacity: 1;
+      }
+
+      #status:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
 
       #browserView {
@@ -98,6 +115,34 @@
         justify-content: center;
         font-size: 18px;
         display: none;
+      }
+
+      #gameLink {
+        font-family: monospace;
+        font-size: 18px;
+        opacity: 0.9;
+        color: #60a5fa;
+        text-decoration: none;
+        margin-left: auto;
+        display: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      #gameLink svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      #gameLink:hover {
+        text-decoration: none;
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.041);
+        transform: translateY(-1px);
       }
     </style>
   </head>
@@ -130,7 +175,15 @@
           <circle cx="15" cy="14" r="1" />
         </svg>
       </button>
-      <div id="status">Click to find a random game</div>
+      <button id="status">Click to find a random game</button>
+      <a id="gameLink" href="#" target="_blank">
+        Open in browser
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
+      </a>
     </div>
 
     <webview id="browserView" src="about:blank"></webview>
@@ -161,6 +214,7 @@
       const webview = document.getElementById("browserView");
       const loadingOverlay = document.getElementById("loadingOverlay");
       const baseUrl = "https://www.mobygames.com/random";
+      const gameLink = document.getElementById("gameLink");
 
       // Function to check if URL is a game page
       function isGamePage(url) {
@@ -169,9 +223,16 @@
 
       button.addEventListener("click", () => {
         button.disabled = true;
+        status.disabled = true;
         status.textContent = "Loading random game...";
         loadingOverlay.style.display = "flex";
         webview.src = baseUrl;
+      });
+
+      status.addEventListener("click", () => {
+        if (!button.disabled) {
+          button.click();
+        }
       });
 
       webview.addEventListener("did-start-loading", () => {
@@ -213,8 +274,14 @@
       webview.addEventListener("did-stop-loading", () => {
         if (isGamePage(webview.getURL())) {
           button.disabled = false;
+          status.disabled = false;
           status.textContent = "Click to find a random game";
           loadingOverlay.style.display = "none";
+          // Update game link
+          gameLink.href = webview.getURL();
+          gameLink.style.display = "block";
+        } else {
+          gameLink.style.display = "none";
         }
       });
     </script>

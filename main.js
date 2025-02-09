@@ -11,10 +11,13 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false,
             webviewTag: true
-        }
+        },
+        icon: path.join(__dirname, 'game-logo.png')
     });
 
     win.loadFile('index.html');
+
+    win.setTitle("Random Game Finder"); // Set the title here
 
     // Window control handlers
     ipcMain.on('minimize-window', () => {
