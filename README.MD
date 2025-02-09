@@ -4,6 +4,10 @@
 
 # Random Game Finder
 
+<p align="center">
+    <img src="./screenshot.png" alt="screenshot" width="200" />
+</p>
+
 Simple Electron app for picking random games.
 
 Created for my personal [YouTube channel](https://www.youtube.com/@CloudToby) series **Random Reviews**.
