@@ -1,12 +1,27 @@
 {
   "name": "random-game-finder",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "electron": "^34.1.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.randomgamefinder.app",
+    "mac": {
+        "category": "public.app-category.utilities"
+    },
+    "win": {
+        "target": "nsis"
+    }
+}
 }

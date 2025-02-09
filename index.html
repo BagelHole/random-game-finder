@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Random Game Finder</title>
+    <style>
+      /* Previous styles remain the same */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #1a1a1a;
+        color: white;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .titlebar {
+        height: 32px;
+        background: #2a2a2a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        -webkit-app-region: drag;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        -webkit-app-region: no-drag;
+      }
+
+      .window-control {
+        background: none;
+        border: none;
+        color: white;
+        opacity: 0.7;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+
+      .window-control:hover {
+        opacity: 1;
+      }
+
+      .finder-controls {
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: #2a2a2a;
+      }
+
+      #findGame {
+        -webkit-app-region: no-drag;
+        background: #2563eb;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #findGame:hover {
+        background: #1d4ed8;
+      }
+
+      #findGame:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      #status {
+        font-family: monospace;
+        opacity: 0.8;
+      }
+
+      #browserView {
+        flex: 1;
+        border: none;
+        background: white;
+      }
+
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="titlebar">
+      <span>Random Game Finder</span>
+      <div class="controls">
+        <button class="window-control" id="minimizeBtn">─</button>
+        <button class="window-control" id="maximizeBtn">□</button>
+        <button class="window-control" id="closeBtn">×</button>
+      </div>
+    </div>
+
+    <div class="finder-controls">
+      <button id="findGame" aria-label="Find random game">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="6" width="20" height="12" rx="2" />
+          <path d="M6 12h4" />
+          <path d="M8 10v4" />
+          <circle cx="17" cy="10" r="1" />
+          <circle cx="15" cy="14" r="1" />
+        </svg>
+      </button>
+      <div id="status">Click to find a random game</div>
+    </div>
+
+    <webview id="browserView" src="about:blank"></webview>
+
+    <div class="loading-overlay" id="loadingOverlay">
+      Loading random game...
+    </div>
+
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      // Window controls
+      document.getElementById("minimizeBtn").addEventListener("click", () => {
+        ipcRenderer.send("minimize-window");
+      });
+
+      document.getElementById("maximizeBtn").addEventListener("click", () => {
+        ipcRenderer.send("maximize-window");
+      });
+
+      document.getElementById("closeBtn").addEventListener("click", () => {
+        ipcRenderer.send("close-window");
+      });
+
+      // Game finder controls
+      const button = document.getElementById("findGame");
+      const status = document.getElementById("status");
+      const webview = document.getElementById("browserView");
+      const loadingOverlay = document.getElementById("loadingOverlay");
+      const baseUrl = "https://www.mobygames.com/random";
+
+      // Function to check if URL is a game page
+      function isGamePage(url) {
+        return url.includes("mobygames.com/game/");
+      }
+
+      button.addEventListener("click", () => {
+        button.disabled = true;
+        status.textContent = "Loading random game...";
+        loadingOverlay.style.display = "flex";
+        webview.src = baseUrl;
+      });
+
+      webview.addEventListener("did-start-loading", () => {
+        loadingOverlay.style.display = "flex";
+      });
+
+      webview.addEventListener("did-navigate", (event) => {
+        // If we're not on a game page, try again
+        if (!isGamePage(event.url)) {
+          webview.src = baseUrl;
+        }
+      });
+
+      webview.addEventListener("dom-ready", () => {
+        // Inject CSS to hide the header and banners
+        webview.insertCSS(`
+          header, 
+          .global-nav, 
+          .breadcrumb, 
+          .game-navbar,
+          .banner,
+          .banner-container,
+          .ad-container,
+          .statusbar-message,
+          .img-fluid,
+          #content > div:first-child,
+          .advertisement { 
+            display: none !important; 
+          }
+          #main { 
+            padding-top: 0 !important; 
+          }
+          .game {
+            padding-top: 20px !important;
+          }
+        `);
+      });
+
+      webview.addEventListener("did-stop-loading", () => {
+        if (isGamePage(webview.getURL())) {
+          button.disabled = false;
+          status.textContent = "Click to find a random game";
+          loadingOverlay.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
