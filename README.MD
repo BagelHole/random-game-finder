@@ -1,6 +1,10 @@
+<p align="center">
+    <img src="./game-logo.png" alt="Logo" width="100" />
+</p>
+
 # Random Game Finder
 
-<img src="./game-logo.png" alt="Logo" width="50"/>  Simple Electron app for picking random games.
+Simple Electron app for picking random games.
 
 ## For End Users
 
