@@ -41,7 +41,7 @@ Contributions are welcome!
 
 ## Attribution
 
-- Logo -
+### Logo
 
 COLLECTION: Cube Action Icons
 
