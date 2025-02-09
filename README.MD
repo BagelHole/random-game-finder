@@ -5,7 +5,7 @@
 # Random Game Finder
 
 <p align="center">
-    <img src="./screenshot.png" alt="screenshot" width="200" />
+    <img src="./screenshot.png" alt="screenshot" width="800" />
 </p>
 
 Simple Electron app for picking random games.
