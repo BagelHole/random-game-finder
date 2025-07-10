@@ -178,7 +178,12 @@
       <button id="status">Click to find a random game</button>
       <a id="gameLink" href="#" target="_blank">
         Open in browser
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
           <polyline points="15 3 21 3 21 9" />
           <line x1="10" y1="14" x2="21" y2="3" />
@@ -259,14 +264,76 @@
           .statusbar-message,
           .img-fluid,
           #content > div:first-child,
-          .advertisement { 
+          .advertisement,
+          /* Additional ad-blocking selectors */
+          .ad,
+          .ads,
+          .advert,
+          .adspace,
+          .ad-space,
+          .ad-banner,
+          .ad-header,
+          .ad-top,
+          .top-ad,
+          .header-ad,
+          .leaderboard,
+          .promo-banner,
+          .sponsored,
+          .dfp-ad,
+          .google-ad,
+          .adsystem,
+          .ad-slot,
+          .ad-unit,
+          .ad-wrapper,
+          .ad-frame,
+          .ad-content,
+          .commercial,
+          .promotion,
+          .sticky-ad,
+          .floating-ad,
+          .overlay-ad,
+          .popup-ad,
+          .interstitial,
+          /* Target by common ad dimensions */
+          div[style*="width: 728px"],
+          div[style*="width: 970px"],
+          div[style*="width: 320px"],
+          div[style*="height: 90px"],
+          div[style*="height: 250px"],
+          /* Target Google AdSense */
+          .adsbygoogle,
+          ins.adsbygoogle,
+          /* Target by ID patterns */
+          div[id*="ad"],
+          div[id*="banner"],
+          div[id*="sponsor"],
+          div[class*="ad-"],
+          div[class*="banner-"],
+          div[class*="promo-"],
+          /* MobyGames specific */
+          .top-banner,
+          .site-header-ad,
+          .page-header-ad,
+          .content-ad,
+          .sidebar-ad { 
             display: none !important; 
+            visibility: hidden !important;
+            opacity: 0 !important;
+            height: 0 !important;
+            width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden !important;
           }
           #main { 
             padding-top: 0 !important; 
           }
           .game {
             padding-top: 20px !important;
+          }
+          /* Remove any top spacing that might be left by ads */
+          body {
+            padding-top: 0 !important;
           }
         `);
       });
